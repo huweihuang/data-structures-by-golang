@@ -1,39 +1,56 @@
-// Package stack creates a ItemStack data structure for the Item type
-package stack
+// Package set creates a ItemSet data structure for the Item type
+package set
 
-import (
-	"sync"
+// Item the type of the Set
+type Item interface{}
 
-	"github.com/cheekybits/genny/generic"
-)
-
-// Item the type of the stack
-type Item generic.Type
-
-// ItemStack the stack of Items
-type ItemStack struct {
-	items []Item
-	lock  sync.RWMutex
+// ItemSet the set of Items
+type ItemSet struct {
+	items map[Item]bool
 }
 
-// New creates a new ItemStack
-func (s *ItemStack) New() *ItemStack {
-	s.items = []Item{}
+// Add adds a new element to the Set. Returns a pointer to the Set.
+func (s *ItemSet) Add(t Item) *ItemSet {
+	if s.items == nil {
+		s.items = make(map[Item]bool)
+	}
+	_, ok := s.items[t]
+	if !ok {
+		s.items[t] = true
+	}
 	return s
 }
 
-// Push adds an Item to the top of the stack
-func (s *ItemStack) Push(t Item) {
-	s.lock.Lock()
-	s.items = append(s.items, t)
-	s.lock.Unlock()
+// Clear removes all elements from the Set
+func (s *ItemSet) Clear() {
+	s.items = make(map[Item]bool)
 }
 
-// Pop removes an Item from the top of the stack
-func (s *ItemStack) Pop() *Item {
-	s.lock.Lock()
-	item := s.items[len(s.items)-1]
-	s.items = s.items[0 : len(s.items)-1]
-	s.lock.Unlock()
-	return &item
+// Delete removes the Item from the Set and returns Has(Item)
+func (s *ItemSet) Delete(item Item) bool {
+	_, ok := s.items[item]
+	if ok {
+		delete(s.items, item)
+	}
+	return ok
+}
+
+// Has returns true if the Set contains the Item
+func (s *ItemSet) Has(item Item) bool {
+	_, ok := s.items[item]
+	return ok
+}
+
+// Items returns the Item(s) stored
+func (s *ItemSet) Items() []Item {
+	items := []Item{}
+	for i := range s.items {
+		items = append(items, i)
+	}
+	return items
+}
+
+// Size returns the size of the set
+func (s *ItemSet) Size() int {
+	return len(s.items)
 }

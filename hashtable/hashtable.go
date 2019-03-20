@@ -4,15 +4,13 @@ package hashtable
 import (
 	"fmt"
 	"sync"
-
-	"github.com/cheekybits/genny/generic"
 )
 
 // Key the key of the dictionary
-type Key generic.Type
+type Key interface{}
 
 // Value the content of the dictionary
-type Value generic.Type
+type Value interface{}
 
 // ValueHashtable the set of Items
 type ValueHashtable struct {

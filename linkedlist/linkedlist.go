@@ -4,12 +4,10 @@ package linkedlist
 import (
 	"fmt"
 	"sync"
-
-	"github.com/cheekybits/genny/generic"
 )
 
 // Item the type of the linked list
-type Item generic.Type
+type Item interface{}
 
 // Node a single node that composes the list
 type Node struct {
@@ -18,7 +16,7 @@ type Node struct {
 }
 
 // ItemLinkedList the linked list of Items
-type ItemBinarySearchTree struct {
+type ItemLinkedList struct {
 	head *Node
 	size int
 	lock sync.RWMutex

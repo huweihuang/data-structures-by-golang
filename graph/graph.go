@@ -4,12 +4,10 @@ package graph
 import (
 	"fmt"
 	"sync"
-
-	"github.com/cheekybits/genny/generic"
 )
 
 // Item the type of the binary search tree
-type Item generic.Type
+type Item interface{}
 
 // Node a single node that composes the tree
 type Node struct {
